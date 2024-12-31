@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <style>
+        /* styles.css */
+    
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+        /* Navbar 样式 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+            height: 50px;
+        }
+    
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+    
+        .navbar .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+    
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+    
+        .navbar a:hover {
+            color: #555;
+        }
+    
+        .navbar .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+    
+        .navbar .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 3px 0;
+        }
+    
+        .nav-links-mobile {
+            display: none;
+            flex-direction: column;
+            background-color: #333;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 100%;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.5s ease; /* 動畫效果 */
+        }
+    
+        .nav-links-mobile a {
+            padding: 10px 20px;
+            text-align: left;
+            color: white;
+            text-decoration: none;
+        }
+    
+        .nav-links-mobile a:hover {
+            background-color: #555;
+        }
+    
+        .nav-links-mobile.active {
+            display: flex;
+            max-height: 300px; /* 足夠大的值讓選單完全展開 */
+        }
+    
+        @media (max-width: 768px) {
+            .navbar .nav-links {
+                display: none;
+            }
+    
+            .navbar .hamburger {
+                display: flex;
+            }
+            img {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+            }
+        }
+
+    /* Timer 容器 */
+
+        .timer-container {
+            display: inline-block;
+            background-color: #fff;
+            margin-top: 50px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        .time-display {
+            font-size: 48px;
+            color: #333;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #eaeaea;
+            border-radius: 5px;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+
+        .set-timer {
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+            width: 60px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .set-timer button {
+            background-color: #2196F3;
+        }
+
+        .set-timer button:hover {
+            background-color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1 class="logo"><a href="home.html">Car-Robot</a></h1>
+        <div class="nav-links">
+            <a href="car.html">Car Using</a>
+            <a href="to-do-list-app.html">To-do-list-App</a>
+            <a href="caculator.html">Caculator</a>
+            <a href="timer.html">Timer</a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- 手機版下拉選單 -->
+    <div class="nav-links-mobile" id="mobileMenu">
+        <a href="car.html">Car Using</a>
+        <a href="to-do-list-app.html">To-do-list-App</a>
+        <a href="caculator.html">Caculator</a>
+        <a href="timer.html">Timer</a>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="timer-container">
+        <h1>Timer</h1>
+        <div class="time-display" id="time-display">00:00</div>
+        <div class="controls">
+            <button id="start-btn">Start</button>
+            <button id="pause-btn" disabled>Pause</button>
+            <button id="reset-btn">Reset</button>
+        </div>
+        <div class="set-timer">
+            <input type="number" id="minutes" placeholder="Minutes" min="0">
+            <input type="number" id="seconds" placeholder="Seconds" min="0" max="59">
+            <button id="set-time-btn">Set Timer</button>
+        </div>
+    </div>
+
+</body>
+
+<script>
+
+    // app.js
+
+    let timer;
+    let isRunning = false;
+    let timeRemaining = 0; // In seconds
+    let initialTime = 0;
+
+    // DOM elements
+    const timeDisplay = document.getElementById('time-display');
+    const startButton = document.getElementById('start-btn');
+    const pauseButton = document.getElementById('pause-btn');
+    const resetButton = document.getElementById('reset-btn');
+    const setTimeButton = document.getElementById('set-time-btn');
+    const minutesInput = document.getElementById('minutes');
+    const secondsInput = document.getElementById('seconds');
+
+    // Start the timer
+    startButton.addEventListener('click', () => {
+        if (isRunning) return; // Don't start if it's already running
+
+        isRunning = true;
+        startButton.disabled = true;
+        pauseButton.disabled = false;
+        timer = setInterval(updateTimer, 1000);
+    });
+
+    // Pause the timer
+    pauseButton.addEventListener('click', () => {
+        clearInterval(timer);
+        isRunning = false;
+        startButton.disabled = false;
+        pauseButton.disabled = true;
+    });
+
+    // Reset the timer
+    resetButton.addEventListener('click', () => {
+        clearInterval(timer);
+        isRunning = false;
+        startButton.disabled = false;
+        pauseButton.disabled = true;
+        timeRemaining = initialTime; // Reset time remaining to initial value
+        displayTime(timeRemaining);
+    });
+
+    // Set the timer (initialize with minutes and seconds)
+    setTimeButton.addEventListener('click', () => {
+        const minutes = parseInt(minutesInput.value) || 0;
+        const seconds = parseInt(secondsInput.value) || 0;
+
+        initialTime = minutes * 60 + seconds;
+        timeRemaining = initialTime;
+
+        if (initialTime > 0) {
+            displayTime(timeRemaining);
+            setTimeButton.disabled = true;
+            minutesInput.disabled = true;
+            secondsInput.disabled = true;
+        }
+    });
+
+    // Function to update the timer every second
+    function updateTimer() {
+        if (timeRemaining > 0) {
+            timeRemaining--;
+            displayTime(timeRemaining);
+        } else {
+            clearInterval(timer);
+            isRunning = false;
+            startButton.disabled = false;
+            pauseButton.disabled = true;
+            alert("Time's up!");
+            resetInputs(); // Reset input fields after timer ends
+        }
+    }
+
+    // Display the remaining time
+    function displayTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        timeDisplay.textContent = `${padZero(minutes)}:${padZero(remainingSeconds)}`;
+    }
+
+    // Add leading zero to single digit minutes/seconds
+    function padZero(num) {
+        return num < 10 ? '0' + num : num;
+    }
+
+    // Reset the input fields for setting new time
+    function resetInputs() {
+        setTimeButton.disabled = false;
+        minutesInput.disabled = false;
+        secondsInput.disabled = false;
+        minutesInput.value = '';
+        secondsInput.value = '';
+    }
+
+</script>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        /* Navbar 样式 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+            height: 50px;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .navbar a:hover {
+            color: #555;
+        }
+
+        .navbar .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .navbar .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 3px 0;
+        }
+
+        .nav-links-mobile {
+            display: none;
+            flex-direction: column;
+            background-color: #333;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 100%;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.5s ease; /* 動畫效果 */
+        }
+
+        .nav-links-mobile a {
+            padding: 10px 20px;
+            text-align: left;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links-mobile a:hover {
+            background-color: #555;
+        }
+
+        .nav-links-mobile.active {
+            display: flex;
+            max-height: 300px; /* 足夠大的值讓選單完全展開 */
+        }
+
+        @media (min-width: 1200px) {
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        @media (min-width: 1175px) {
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        @media (min-width: 1150px) {
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links {
+                display: none;
+            }
+
+            .navbar .hamburger {
+                display: flex;
+            }
+            img {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+            }
+        }
+        .container {
+            text-align: center;
+        }
+        footer {
+            background-color: #333;  /* Dark background for the footer */
+            color: white;            /* White text color */
+            text-align: center;      /* Center align text */
+            padding: 20px 0;         /* Add some space inside the footer */
+            font-size: 14px;         /* Smaller font size */
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.1);  /* Optional shadow for depth */
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;  /* Center the content */
+            padding: 10px 20px;
+        }
+
+        footer p {
+            margin: 10px 0;  /* Add margin between paragraphs */
+        }
+
+        footer a {
+            color: #4CAF50;  /* Green link color */
+            text-decoration: none;  /* Remove underline */
+        }
+
+        footer a:hover {
+            text-decoration: underline;  /* Underline links on hover */
+        }
+
+        .social-media {
+            margin-top: 15px;
+        }
+
+        .social-media .social-link {
+            margin: 0 10px;  /* Space out the social links */
+            font-size: 16px;
+        }
+
+        .social-media .social-link:hover {
+            color: #fff;  /* Change color on hover */
+        }
+
+        .feedback {
+            background-color: #f9f9f9;   /* Light background for contrast */
+            padding: 30px 20px;           /* Add padding to the section */
+            text-align: center;           /* Center align text */
+            margin: 40px 0;               /* Space around the section */
+            border-radius: 8px;           /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+        }
+
+        .feedback h2 {
+            font-size: 24px;
+            color: #333;  /* Dark text for the header */
+            margin-bottom: 15px;  /* Space below the header */
+        }
+
+        .feedback p {
+            font-size: 16px;
+            color: #666;  /* Lighter text for the paragraph */
+            margin-bottom: 20px;  /* Space below the paragraph */
+        }
+
+        .feedback-form {
+            display: inline-block;
+            text-align: left;
+            max-width: 600px;
+            width: 100%;
+            background-color: #fff;  /* White background for form */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* Light shadow */
+        }
+
+        .feedback form textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            resize: vertical;  /* Allow resizing vertically */
+            transition: border-color 0.3s;  /* Smooth transition on focus */
+        }
+
+        .feedback form textarea:focus {
+            border-color: #4CAF50;  /* Green border on focus */
+            outline: none;  /* Remove default focus outline */
+        }
+
+        .feedback form .submit-button {
+            background-color: #4CAF50;  /* Green background for submit button */
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;  /* Smooth transitions */
+        }
+
+        .feedback form .submit-button:hover {
+            background-color: #45a049;  /* Darker green on hover */
+            transform: scale(1.05);  /* Slight scale-up effect */
+        }
+
+        .feedback form .submit-button:active {
+            background-color: #388e3c;  /* Even darker green on active press */
+        }
+
+        .feedback form textarea::placeholder {
+            color: #aaa;  /* Lighter color for the placeholder text */
+        }
+
+        @media (max-width: 768px) {
+            .feedback {
+                padding: 20px;
+            }
+
+            .feedback-form {
+                width: 100%;
+                padding: 15px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<div class="navbar">
+    <h1 class="logo"><a href="home.html">Car</a></h1>
+    <div class="nav-links">
+        <a href="car.html">Car Using</a>
+        <a href="about.html">About</a>
+        <a href="#contact">Contact</a>
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+
+<!-- 手機版下拉選單 -->
+<div class="nav-links-mobile" id="mobileMenu">
+    <a href="car.html">Car Using</a>
+    <a href="about.html">About</a>
+    <a href="#contact">Contact</a>
+</div>
+
+<div class="container">
+    <h1>Welcome to Car Page</h1>
+    <p>This is a simple web page for controlling a car using an ESP8266.</p>
+    <p>Please check the <a href="car.html">Car Using</a> page for more information.</p>
+</div>
+<img src="第九組 AI自駕車 簡報.jpg" alt="">
+<section class="feedback">
+    <h2>We'd love to hear your feedback!</h2>
+    <p>If you have any suggestions or questions, feel free to reach out to us.</p>
+    <form action="https://www.youtube.com/watch?v=dtUerXkMqsQ" method="post" class="feedback-form">
+        <textarea name="feedback" rows="6" placeholder="Your feedback..." required></textarea><br><br>
+        <input type="submit" value="Submit" class="submit-button">
+    </form>
+</section>
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2024 Car Control Project | Created by [Your Name].</p>
+        <p>Follow us on <a href="https://www.youtube.com/shorts/tI3YP3zz1fk" target="_blank">Twitter</a> for updates.</p>
+        <div class="social-media">
+            <a href="https://www.youtube.com/watch?v=dtUerXkMqsQ" target="_blank" class="social-link">Twitter</a>
+            <a href="https://www.youtube.com/watch?v=dtUerXkMqsQ" target="_blank" class="social-link">Facebook</a>
+            <a href="https://www.youtube.com/watch?v=dtUerXkMqsQ" target="_blank" class="social-link">Instagram</a>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>

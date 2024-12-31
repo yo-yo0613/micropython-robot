@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+        /* Navbar 样式 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+            height: 50px;
+        }
+    
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+    
+        .navbar .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+    
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+    
+        .navbar a:hover {
+            color: #555;
+        }
+    
+        .navbar .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+    
+        .navbar .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 3px 0;
+        }
+    
+        .nav-links-mobile {
+            display: none;
+            flex-direction: column;
+            background-color: #333;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 100%;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.5s ease; /* 動畫效果 */
+        }
+    
+        .nav-links-mobile a {
+            padding: 10px 20px;
+            text-align: left;
+            color: white;
+            text-decoration: none;
+        }
+    
+        .nav-links-mobile a:hover {
+            background-color: #555;
+        }
+    
+        .nav-links-mobile.active {
+            display: flex;
+            max-height: 300px; /* 足夠大的值讓選單完全展開 */
+        }
+    
+        @media (max-width: 768px) {
+            .navbar .nav-links {
+                display: none;
+            }
+    
+            .navbar .hamburger {
+                display: flex;
+            }
+            img {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+            }
+        }
+
+        .calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 280px;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+
+        .display {
+            width: 100%;
+            padding: 15px;
+            font-size: 24px;
+            text-align: right;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+        }
+
+        .btn {
+            padding: 20px;
+            font-size: 20px;
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #d1d1d1;
+        }
+
+        .operator {
+            background-color: #f4a261;
+            color: white;
+        }
+
+        .operator:hover {
+            background-color: #e07b3e;
+        }
+
+        .btn-clear {
+            width: 100%;
+            background-color: #e74c3c;
+            color: white;
+            padding: 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .btn-clear:hover {
+            background-color: #c0392b;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensures input doesn't exceed the container */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1 class="logo"><a href="home.html">Car-Robot</a></h1>
+        <div class="nav-links">
+            <a href="car.html">Car Using</a>
+            <a href="to-do-list-app.html">To-do-list-App</a>
+            <a href="caculator.html">Caculator</a>
+            <a href="timer.html">Timer</a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- 手機版下拉選單 -->
+    <div class="nav-links-mobile" id="mobileMenu">
+        <a href="car.html">Car Using</a>
+        <a href="to-do-list-app.html">To-do-list-App</a>
+        <a href="caculator.html">Caculator</a>
+        <a href="timer.html">Timer</a>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+ 
+    <div class="calculator">
+        <input type="text" id="display" class="display" disabled>
+        <div class="buttons">
+            <button class="btn" onclick="appendToDisplay('7')">7</button>
+            <button class="btn" onclick="appendToDisplay('8')">8</button>
+            <button class="btn" onclick="appendToDisplay('9')">9</button>
+            <button class="btn operator" onclick="appendToDisplay('/')">/</button>
+
+            <button class="btn" onclick="appendToDisplay('4')">4</button>
+            <button class="btn" onclick="appendToDisplay('5')">5</button>
+            <button class="btn" onclick="appendToDisplay('6')">6</button>
+            <button class="btn operator" onclick="appendToDisplay('*')">*</button>
+
+            <button class="btn" onclick="appendToDisplay('1')">1</button>
+            <button class="btn" onclick="appendToDisplay('2')">2</button>
+            <button class="btn" onclick="appendToDisplay('3')">3</button>
+            <button class="btn operator" onclick="appendToDisplay('-')">-</button>
+
+            <button class="btn" onclick="appendToDisplay('0')">0</button>
+            <button class="btn" onclick="appendToDisplay('.')">.</button>
+            <button class="btn operator" onclick="calculateResult()">=</button>
+            <button class="btn operator" onclick="appendToDisplay('+')">+</button>
+        </div>
+        <div class="controls">
+            <button class="btn-clear" onclick="clearDisplay()">C</button>
+        </div>
+    </div>
+
+</body>
+
+<script>
+
+    // app.js
+
+    // Append clicked button's value to the display
+    function appendToDisplay(value) {
+        const display = document.getElementById('display');
+        display.value += value;
+    }
+
+    // Clear the display
+    function clearDisplay() {
+        const display = document.getElementById('display');
+        display.value = '';
+    }
+
+    // Calculate the result of the expression
+    function calculateResult() {
+        const display = document.getElementById('display');
+        try {
+            display.value = eval(display.value); // Using eval to evaluate the expression
+        } catch (error) {
+            display.value = 'Error'; // Display error if the expression is invalid
+        }
+    }
+
+
+</script>
+</html>

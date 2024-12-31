@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To do list app</title>
+    <style>
+    /* styles.css */
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+    }
+    /* Navbar 样式 */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #333;
+        padding: 10px 20px;
+        color: white;
+        height: 50px;
+    }
+
+    .navbar .logo {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .navbar .nav-links {
+        display: flex;
+        gap: 15px;
+    }
+
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .navbar a:hover {
+        color: #555;
+    }
+
+    .navbar .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+    }
+
+    .navbar .hamburger div {
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 3px 0;
+    }
+
+    .nav-links-mobile {
+        display: none;
+        flex-direction: column;
+        background-color: #333;
+        position: absolute;
+        top: 50px;
+        right: 0;
+        width: 100%;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.5s ease; /* 動畫效果 */
+    }
+
+    .nav-links-mobile a {
+        padding: 10px 20px;
+        text-align: left;
+        color: white;
+        text-decoration: none;
+    }
+
+    .nav-links-mobile a:hover {
+        background-color: #555;
+    }
+
+    .nav-links-mobile.active {
+        display: flex;
+        max-height: 300px; /* 足夠大的值讓選單完全展開 */
+    }
+
+    @media (max-width: 768px) {
+        .navbar .nav-links {
+            display: none;
+        }
+
+        .navbar .hamburger {
+            display: flex;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+    }
+
+    .todo-container {
+        text-align: center;
+        display: inline-block;
+        margin-top: 50px;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 300px;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .input-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    #task-input {
+        width: 80%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    #add-task-btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    #add-task-btn:hover {
+        background-color: #45a049;
+    }
+
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+        margin-bottom: 20px;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        font-size: 18px;
+    }
+
+    li.completed {
+        text-decoration: line-through;
+        color: #aaa;
+    }
+
+    button {
+        background-color: #f44336;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #e53935;
+    }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1 class="logo"><a href="home.html">Car-Robot</a></h1>
+        <div class="nav-links">
+            <a href="car.html">Car Using</a>
+            <a href="to-do-list-app.html">To-do-list-App</a>
+            <a href="caculator.html">Caculator</a>
+            <a href="timer.html">Timer</a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- 手機版下拉選單 -->
+    <div class="nav-links-mobile" id="mobileMenu">
+        <a href="car.html">Car Using</a>
+        <a href="to-do-list-app.html">To-do-list-App</a>
+        <a href="caculator.html">Caculator</a>
+        <a href="timer.html">Timer</a>
+    </div>
+
+    <br>
+    <br>
+
+    <div class="todo-container">
+        <h1>To-Do List</h1>
+        <div class="input-container">
+            <input type="text" id="task-input" placeholder="Add a new task">
+            <button id="add-task-btn">Add Task</button>
+        </div>
+        <ul id="task-list">
+            <!-- Tasks will appear here -->
+        </ul>
+        <button id="clear-completed-btn">Clear Completed</button>
+    </div>
+</body>
+
+<script>
+
+    // app.js
+
+    // Get references to the DOM elements
+    const taskInput = document.getElementById('task-input');
+    const addTaskButton = document.getElementById('add-task-btn');
+    const taskList = document.getElementById('task-list');
+    const clearCompletedButton = document.getElementById('clear-completed-btn');
+
+    // Add a new task
+    addTaskButton.addEventListener('click', function() {
+        const taskText = taskInput.value.trim();
+        if (taskText !== "") {
+            const taskItem = document.createElement('li');
+            taskItem.textContent = taskText;
+
+            // Add a checkbox to mark the task as completed
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.classList.add('checkbox');
+            taskItem.prepend(checkbox);
+
+            // Append the task item to the list
+            taskList.appendChild(taskItem);
+
+            // Clear the input field
+            taskInput.value = "";
+
+            // Add event listener to the checkbox to mark task as completed
+            checkbox.addEventListener('change', function() {
+                taskItem.classList.toggle('completed', checkbox.checked);
+            });
+        }
+    });
+
+    // Clear all completed tasks
+    clearCompletedButton.addEventListener('click', function() {
+        const completedTasks = document.querySelectorAll('.completed');
+        completedTasks.forEach(function(task) {
+            task.remove();
+        });
+    });
+
+
+</script>
+
+</html>
