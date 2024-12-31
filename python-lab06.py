@@ -73,7 +73,35 @@ def handleHomeHtml(socket, args):
         ESP8266WebServer.ok(socket, "200", html)
     except Exception as e:
         ESP8266WebServer.err(socket, "500", "File not found!")
-        
+
+# 處理 timer.html 的函數
+def handleTimerHtml(socket, args):
+    try:
+        with open("timer.html", "r") as file:
+            html = file.read()
+        ESP8266WebServer.ok(socket, "200", html)
+    except Exception as e:
+        ESP8266WebServer.err(socket, "500", "File not found!")
+
+# 處理 caculator.html 的函數
+def handleCaculatorHtml(socket, args):
+    try:
+        with open("cacultor.html", "r") as file:
+            html = file.read()
+        ESP8266WebServer.ok(socket, "200", html)
+    except Exception as e:
+        ESP8266WebServer.err(socket, "500", "File not found!")
+
+
+# 處理 to-do-list-app.html 的函數
+def handleToDoListHtml(socket, args):
+    try:
+        with open("to-do-list-app.html", "r") as file:
+            html = file.read()
+        ESP8266WebServer.ok(socket, "200", html)
+    except Exception as e:
+        ESP8266WebServer.err(socket, "500", "File not found!")
+
 LED = Pin(2, Pin.OUT, value = 1)    # 關閉內建 LED 燈
 
 sta = network.WLAN(network.STA_IF)  # 開啟工作站介面
@@ -88,7 +116,10 @@ LED.value(0)                        # 開啟內建 LED 燈
 
 ESP8266WebServer.begin(80)          # 啟用網站
 ESP8266WebServer.onPath("/", handleCarHtml)  # 根目錄對應 car.html
-ESP8266WebServer.onPath("/home.html", handleHomeHtml) # 根目錄對應 home.html
+ESP8266WebServer.onPath("/home", handleHomeHtml) # 根目錄對應 home.html
+ESP8266WebServer.onPath("/timer", handleHomeHtml) # 根目錄對應 timer.html
+ESP8266WebServer.onPath("/caculator", handleHomeHtml) # 根目錄對應 caculator.html
+ESP8266WebServer.onPath("/to-do-list-app", handleHomeHtml) # 根目錄對應 to-do-list-app.html
 # 指定處理指令的函式 Race
 ESP8266WebServer.onPath("/Race", handleCmd)
 print("伺服器位址：" + sta.ifconfig()[0]) # 顯示網站的 IP 位址
