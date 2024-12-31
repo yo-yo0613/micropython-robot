@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video</title>
+</head>
+<style>
+    /* General Styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        text-align: center;
+        height: 100vh;
+        color: #333;
+    }
+
+    .container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+        display: inline-block;
+        box-sizing: border-box;
+    }
+
+    h1 {
+        margin: 0 0 10px;
+        font-size: 24px;
+        color: #444;
+    }
+
+    p {
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: #666;
+    }
+
+    /* Search Bar */
+    .search-bar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .search-bar input {
+        flex: 1;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .search-bar button {
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .search-bar button:hover {
+        background-color: #45a049;
+    }
+
+    /* Video Container */
+    .video-container {
+        margin-top: 20px;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        padding-bottom: 56.25%; /* Aspect ratio for 16:9 */
+        height: 0;
+    }
+
+    .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+
+    /* Video Container Styles */
+    .video-container {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: none;
+    }
+
+    /* Navbar 样式 */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #333;
+        padding: 10px 20px;
+        color: white;
+        height: 50px;
+    }
+
+    .navbar .logo {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .navbar .nav-links {
+        display: flex;
+        gap: 15px;
+    }
+
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .navbar a:hover {
+        color: #555;
+    }
+
+    .navbar .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+    }
+
+    .navbar .hamburger div {
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 3px 0;
+    }
+
+    .nav-links-mobile {
+        display: none;
+        flex-direction: column;
+        background-color: #333;
+        position: absolute;
+        top: 50px;
+        right: 0;
+        width: 100%;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.5s ease; /* 動畫效果 */
+    }
+
+    .nav-links-mobile a {
+        padding: 10px 20px;
+        text-align: left;
+        color: white;
+        text-decoration: none;
+    }
+
+    .nav-links-mobile a:hover {
+        background-color: #555;
+    }
+
+    .nav-links-mobile.active {
+        display: flex;
+        max-height: 300px; /* 足夠大的值讓選單完全展開 */
+    }
+
+    @media (max-width: 768px) {
+        .navbar .nav-links {
+            display: none;
+        }
+
+        .navbar .hamburger {
+            display: flex;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+    }
+
+</style>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1 class="logo"><a href="home.html">Car-Robot</a></h1>
+        <div class="nav-links">
+            <a href="car.html">Car Using</a>
+            <a href="to-do-list-app.html">To-do-list-App</a>
+            <a href="caculator.html">Caculator</a>
+            <a href="timer.html">Timer</a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- 手機版下拉選單 -->
+    <div class="nav-links-mobile" id="mobileMenu">
+        <a href="car.html">Car Using</a>
+        <a href="to-do-list-app.html">To-do-list-App</a>
+        <a href="caculator.html">Caculator</a>
+        <a href="timer.html">Timer</a>
+    </div>
+
+    <br>
+    <br>
+    <br>
+
+    <div class="container">
+        <h1>Video Player App</h1>
+        <p>Search for a YouTube video and watch it here!</p>
+        
+        <!-- Search Input -->
+        <div class="search-bar">
+          <input type="text" id="search-input" placeholder="Enter YouTube Video ID or URL">
+          <button id="search-button">Play Video</button>
+        </div>
+        
+        <!-- Video Display -->
+        <div class="video-container">
+            <video id="video-player" controls>
+              <source src="米奇妙妙屋.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+      </div>
+</body>
+<script>
+    // Get DOM elements
+    const searchInput = document.getElementById("search-input");
+    const searchButton = document.getElementById("search-button");
+    const videoFrame = document.getElementById("video-frame");
+
+    // Add event listener for the search button
+    searchButton.addEventListener("click", () => {
+    const inputValue = searchInput.value.trim();
+
+    // Extract YouTube video ID from input (handles full URL or ID)
+    const videoId = extractVideoId(inputValue);
+
+    if (videoId) {
+        // Update iframe src to play the new video
+        videoFrame.src = `https://www.youtube.com/embed/${videoId}`;
+    } else {
+        alert("Please enter a valid YouTube video ID or URL.");
+    }
+    });
+
+    // Function to extract YouTube video ID from input
+    function extractVideoId(input) {
+        const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/.*v=([a-zA-Z0-9_-]{11})|youtu\.be\/([a-zA-Z0-9_-]{11})|^([a-zA-Z0-9_-]{11})$/;
+        const match = input.match(regex);
+        return match ? match[1] || match[2] || match[3] : null;
+    }
+
+    function toggleMenu() {
+        const menu = document.getElementById("mobileMenu");
+        menu.classList.toggle("active");
+    }
+
+</script>
+</html>

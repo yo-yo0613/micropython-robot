@@ -182,11 +182,12 @@
 
         .feedback {
             background-color: #f9f9f9;   /* Light background for contrast */
-            padding: 30px 20px;           /* Add padding to the section */
+            /* padding: 10px 10px;           Add padding to the section */
             text-align: center;           /* Center align text */
             margin: 40px 0;               /* Space around the section */
             border-radius: 8px;           /* Rounded corners */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+            box-sizing: border-box;
         }
 
         .feedback h2 {
@@ -210,6 +211,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* Light shadow */
+            box-sizing: border-box;
         }
 
         .feedback form textarea {
@@ -300,7 +302,7 @@
 <section class="feedback">
     <h2>We'd love to hear your feedback!</h2>
     <p>If you have any suggestions or questions, feel free to reach out to us.</p>
-    <form action="https://www.youtube.com/watch?v=dtUerXkMqsQ" method="post" class="feedback-form">
+    <form action="video.html" method="post" class="feedback-form">
         <textarea name="feedback" rows="6" placeholder="Your feedback..." required></textarea><br><br>
         <input type="submit" value="Submit" class="submit-button">
     </form>
